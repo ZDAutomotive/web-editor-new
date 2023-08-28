@@ -38,7 +38,8 @@ from tornado.log import enable_pretty_logging
 from .web.handlers.page import (
     BaseHandler, DeviceConnectHandler,
     DeviceHierarchyHandler, DeviceHierarchyHandlerV2, DeviceScreenshotHandler,
-    DeviceWidgetListHandler, MainHandler, VersionHandler, WidgetPreviewHandler)
+    DeviceWidgetListHandler, MainHandler, VersionHandler, WidgetPreviewHandler,
+    AppStartHandler, AppStopHandler, AppUninstallHandler)
 from .web.handlers.proxy import StaticProxyHandler
 from .web.handlers.shell import PythonShellHandler
 from .web.utils import current_ip, tostr
@@ -111,6 +112,12 @@ def make_app(settings={}):
             # (r"/ws/v1/build", BuildWSHandler),
             (r"/ws/v1/python", PythonShellHandler),
             (r"/quit", QuitHandler),
+            # 获取app信息
+            (r"/api/v1/devices/([^/]+)/start", AppStartHandler),
+            # 获取app信息
+            (r"/api/v1/devices/([^/]+)/stop", AppStopHandler),
+            # 获取app信息
+            (r"/api/v1/devices/([^/]+)/uninstall", AppUninstallHandler),
         ],
         **settings)
     return application

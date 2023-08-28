@@ -87,6 +87,21 @@ class _AndroidUiautomatorDevice(DeviceMeta):
     @property
     def device(self):
         return self._d
+    
+    def app_start(self, name):
+        self._d.app_start(name)
+    
+    def app_stop(self, name):
+        self._d.app_stop(name)
+    
+    def app_info(self, name):
+        self._d.app_info(name)
+
+    def app_uninstall(self, name):
+        self._d.app_uninstall(name)
+
+    def app_list(self):
+        self._d.app_list()
 
 
 class _AppleDevice(DeviceMeta):

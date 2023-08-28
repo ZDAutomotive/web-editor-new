@@ -224,3 +224,86 @@ class DeviceScreenshotHandler(BaseHandler):
             self.set_status(500)  # Gone
             self.write({"description": traceback.format_exc()})
 
+
+class AppStartHandler(BaseHandler):
+    def get(self, device_id):
+        try:
+            d = get_device(device_id)
+            name = self.get_argument("name", '')
+            package = self.get_argument("package", '')
+            if len(name) != 0:
+                apps = d.app_list()
+                for app in apps:
+                   info = d.app_info(app)
+                   if not info is None and info.label == name:
+                       package = app
+                       break
+            d.app_start(package)
+            self.write({
+                "success": True
+            })
+        except EnvironmentError as e:
+            traceback.print_exc()
+            self.set_status(430, "Environment Error")
+            logger.error("devices list failed: %s", e)
+            self.write({"description": str(e)})
+        except RuntimeError as e:
+            self.set_status(410)  # Gone
+            logger.error("devices list failed: %s", e)
+            self.write({"description": traceback.print_exc()})
+
+
+class AppStopHandler(BaseHandler):
+    def get(self, device_id):
+        try:
+            d = get_device(device_id)
+            name = self.get_argument("name", '')
+            package = self.get_argument("package", '')
+            if len(name) != 0:
+                apps = d.app_list()
+                for app in apps:
+                   info = d.app_info(app)
+                   if not info is None and info.label == name:
+                       package = app
+                       break
+            d.app_stop(package)
+            self.write({
+                "success": True
+            })
+        except EnvironmentError as e:
+            traceback.print_exc()
+            self.set_status(430, "Environment Error")
+            logger.error("devices list failed: %s", e)
+            self.write({"description": str(e)})
+        except RuntimeError as e:
+            self.set_status(410)  # Gone
+            logger.error("devices list failed: %s", e)
+            self.write({"description": traceback.print_exc()})
+
+
+class AppUninstallHandler(BaseHandler):
+    def get(self, device_id):
+        try:
+            d = get_device(device_id)
+            name = self.get_argument("name", '')
+            package = self.get_argument("package", '')
+            if len(name) != 0:
+                apps = d.app_list()
+                for app in apps:
+                   info = d.app_info(app)
+                   if not info is None and info.label == name:
+                       package = app
+                       break
+            d.app_uninstall(package)
+            self.write({
+                "success": True
+            })
+        except EnvironmentError as e:
+            traceback.print_exc()
+            self.set_status(430, "Environment Error")
+            logger.error("devices list failed: %s", e)
+            self.write({"description": str(e)})
+        except RuntimeError as e:
+            self.set_status(410)  # Gone
+            logger.error("devices list failed: %s", e)
+            self.write({"description": traceback.print_exc()})
